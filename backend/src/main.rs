@@ -16,6 +16,7 @@ mod user;
 mod article;
 mod review;
 mod comment;
+mod container;
 
 
 fn get_db_config() -> deadpool_postgres::Config {

@@ -10,7 +10,8 @@ use actix_multipart_extract::{File, MultipartForm};
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq,PostgresMapper)]
 
 #[pg_mapper(table="containers")]
-pub struct InputContainer {
+pub struct Container {
+    pub id:i32,
     pub container:String,
     pub facture:i32,
     pub article:String,
@@ -42,7 +43,6 @@ pub struct InputContainer {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct InputContainer {
-    pub id:i32,
     pub container:String,
     pub facture:i32,
     pub article:String,
