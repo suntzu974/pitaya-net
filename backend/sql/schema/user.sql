@@ -1,0 +1,12 @@
+CREATE TABLE users
+(
+    slug VARCHAR(255) PRIMARY KEY,
+/*    id SERIAL PRIMARY KEY,*/
+    username VARCHAR(255) NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    token VARCHAR(255) NULL DEFAULT '',
+    bio VARCHAR(255) NULL,
+    image VARCHAR(255) NULL DEFAULT '',
+    following BOOL DEFAULT FALSE
+);

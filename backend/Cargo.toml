@@ -1,0 +1,57 @@
+[package]
+name = "backend"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[bin]]
+name = "pitaya_backend"
+path = "src/main.rs"
+
+[profile.release]
+strip = true
+opt-level = "s"
+lto = true
+codegen-units = 1
+
+[dependencies]
+actix-cors = "0.6.1"
+actix-easy-multipart = "2.1.1"
+actix-form-data = "0.6.2"
+actix-multipart = "0.4.0"
+actix-multipart-extract = "0.1.5"
+actix-rt = "2.7.0"
+actix-web = { version = "4.1.0", features = ["rustls"] }
+actix-web-httpauth = "0.8.0"
+base64 = "0.13.0"
+chrono = { version = "0.4.19", features = ["serde"] }
+config = "0.13.1"
+config-file = "0.2.3"
+deadpool-postgres = { version = "0.10.2", features = ["serde"] }
+derive_more = "0.99.17"
+dotenv = "0.15.0"
+env_logger = "0.9.0"
+futures = "0.3.23"
+futures-util = "0.3.23"
+image = "0.24.2"
+image-base64 = "0.1.0"
+itertools = "0.10.3"
+lazy_static = "1.4.0"
+lettre = "0.9.6"
+mime_guess = "2.0.4"
+mobc-postgres = "0.7.0"
+rand = "0.8.5"
+rust-argon2 = "1.0.0"
+rustls = "0.20.6"
+rustls-pemfile = "1.0.0"
+sanitize-filename = "0.4.0"
+serde = { version = "1.0.137", features = ["derive"] }
+serde_derive = "1.0.137"
+serde_json = "1.0.85"
+time = "0.3.9"
+tokio-pg-mapper = { version = "0.2.0", features = ["derive"] }
+tokio-pg-mapper-derive = "0.2.0"
+tokio-postgres = { version = "0.7.6", features = ["with-chrono-0_4", "with-uuid-0_8"] }
+uuid = { version = "1.0.0", features = ["v4"] }
+validator = { version = "0.15.0", features = ["validator_derive"] }
+validator_derive = "0.15.0"

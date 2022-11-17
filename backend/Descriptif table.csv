@@ -1,0 +1,45 @@
+column_name;column_datatype;column_length;Libelle
+i1ent                           ;INTEGER                         ;1;Entreprise
+chcodi                          ;CHAR                            ;8;Référence article
+chgencod                        ;CHAR                            ;13;EAN 13
+vccodc                          ;VARCHAR                         ;20;Référence fournisseur
+i1cfam                          ;INTEGER                         ;1;Code famille
+i2sfam                          ;INTEGER                         ;2;Code sous famille
+i1dept                          ;INTEGER                         ;1;Code département
+vcdesl                          ;VARCHAR                         ;30;Designation
+vcdesc                          ;VARCHAR                         ;20;Designation courte
+chtyp                           ;CHAR                            ;1;Type article
+chtstk                          ;CHAR                            ;1;Mode de gestion stock
+chunitstk                       ;CHAR                            ;5;Unite de stockage principal
+chu1                            ;CHAR                            ;5;Unite de stockage principal
+f8c1                            ;FLOAT                           ;8;Coeff de relation primaire
+chu2                            ;CHAR                            ;5;Unité de stockage secondaire
+f8c2                            ;FLOAT                           ;8;Coefficient de relation secondaire
+chu3                            ;CHAR                            ;5;Unité de stock tertiare
+f8c3                            ;FLOAT                           ;8;Coefficient de relation tertiaire
+chctva                          ;CHAR                            ;1;Code TVA
+chstdouane                      ;CHAR                            ;9;Code douane
+chtardouane                     ;CHAR                            ;13;Code article douanier
+i1repfnr1                       ;INTEGER                         ;1;Rerpertoire fournisseur
+i4numfnr1                       ;INTEGER                         ;4;Code fournisseur
+chedreff                        ;CHAR                            ;1;Editer la référence fournisseur (O/N)
+i4long                          ;INTEGER                         ;4;Lonngeur
+i2larg                          ;INTEGER                         ;2;Largeur
+i2haut                          ;INTEGER                         ;2;Hauteur
+i4poidsb                        ;INTEGER                         ;4;Poids
+vcobs                           ;VARCHAR                         ;40;Observation
+i4cstat                         ;INTEGER                         ;4;Code statistiqUE
+i1depotp                        ;INTEGER                         ;1;Dépôt plateforme
+vcrg1                           ;VARCHAR                         ;20;Référence X3
+vcrg2                           ;VARCHAR                         ;20;Non Utilisé
+vcrg3                           ;VARCHAR                         ;20;Non Utilisé
+chuniv                          ;CHAR                            ;3;Univers
+chum                            ;CHAR                            ;5;Unité de mesure
+f8um                            ;FLOAT                           ;8;Unité de mesure
+vccodd3e                        ;VARCHAR                         ;6;Code D3E
+i2numach                        ;INTEGER                         ;2;Acheteur
+i2numplanif                     ;INTEGER                         ;2;Planificatgeur
+didatcre                        ;INTEGER                         ;4;Date de création
+vcusrcre                        ;VARCHAR                         ;8;Utilisateur créateur
+didatmaj                        ;INTEGER                         ;4;Date de mise à jour
+vcusrmaj                        ;VARCHAR                         ;8;Utilisateur modificateur

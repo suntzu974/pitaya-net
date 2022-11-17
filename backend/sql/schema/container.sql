@@ -1,0 +1,30 @@
+
+CREATE TABLE containers (
+    id SERIAL PRIMARY KEY,
+    container TEXT ,
+    facture INTEGER,
+    article TEXT,
+    designation TEXT,
+    poids_colis INTEGER,
+    poids_commande INTEGER,
+    volume NUMERIC(12,2),
+    pcb INTEGER,
+    spcb INTEGER,
+    pv NUMERIC(12,2)
+    pvconseil NUMERIC(1Z,2),
+    qte NUMERIC(12,2),
+    montant NUMERIC(1Z,2),
+    date INTEGER,
+    palette TEXT,
+    origine TEXT,
+    ean TEXT,
+    theme TEXT,
+    codedouanier TEXT,
+    commande TEXT,
+    libunivers TEXT,
+    univers TEXT,
+    libfamille TEXT,
+    famile TEXT,
+    libsfamille TEXT,
+    sfamille TEXT
+);
