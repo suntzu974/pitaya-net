@@ -1,6 +1,6 @@
 use yew::prelude::*;
 
-use crate::components::article_list::{ArticleList, ArticleListFilter};
+use crate::components::review_list::{ReviewList, ReviewListFilter};
 use crate::hooks::use_user_context;
 
 #[derive(Properties, Clone, PartialEq)]
