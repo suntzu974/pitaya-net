@@ -9,7 +9,7 @@ use crate::components::{
 use crate::routes::{switch, AppRoute};
 
 /// The root app component
-#[function_component(PitayaApp)]
+#[function_component(App)]
 pub fn app() -> Html {
     html! {
         <UserContextProvider>
@@ -21,3 +21,5 @@ pub fn app() -> Html {
         </UserContextProvider>
     }
 }
+
+

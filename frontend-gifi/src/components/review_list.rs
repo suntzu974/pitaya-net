@@ -1,37 +1,33 @@
 use yew::prelude::*;
 use yew_hooks::use_async;
 
-use super::article_preview::ArticlePreview;
-use super::list_pagination::ListPagination;
-use crate::services::articles::*;
+use super::review_preview::ReviewPreview;
+use crate::services::reviews::*;
 
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props {
-    pub filter: ArticleListFilter,
+    pub filter: ReviewListFilter,
 }
 
 /// Filters for article list
 #[derive(Clone, Debug, PartialEq)]
-pub enum ArticleListFilter {
+pub enum ReviewListFilter {
     All,
-    ByAuthor(String),
-    ByTag(String),
-    FavoritedBy(String),
-    Feed,
+    Deleted(bool),
 }
 
 /// List of articles component
-#[function_component(ArticleList)]
-pub fn article_list(props: &Props) -> Html {
+#[function_component(ReviewList)]
+pub fn review_list(props: &Props) -> Html {
     let current_page = use_state(|| 0u32);
-    let article_list = {
+    let review_list = {
         let filter = props.filter.clone();
         let current_page = current_page.clone();
 
         use_async(async move {
             match filter {
-                ArticleListFilter::All => all(*current_page).await,
-                ArticleListFilter::ByAuthor(author) => by_author(author, *current_page).await,
+                ReviewListFilter::All => all(*current_page).await,
+                ReviewicleListFilter::ByAuthor(author) => by_author(author, *current_page).await,
                 ArticleListFilter::ByTag(tag) => by_tag(tag, *current_page).await,
                 ArticleListFilter::FavoritedBy(author) => favorited_by(author, *current_page).await,
                 ArticleListFilter::Feed => feed().await,

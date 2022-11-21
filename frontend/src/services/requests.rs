@@ -6,7 +6,7 @@ use parking_lot::RwLock;
 use serde::{de::DeserializeOwned, Serialize};
 
 #[cfg(debug_assertions)]
-const API_ROOT: &str = "https://localhost:8081";
+const API_ROOT: &str = "http://localhost:3001";
 #[cfg(not(debug_assertions))]
 const API_ROOT: &str = "https://www.goyav.re:8443";
 

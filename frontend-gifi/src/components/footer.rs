@@ -11,7 +11,7 @@ pub fn footer() -> Html {
                 <Link<AppRoute> to={AppRoute::Home} classes="logo-font">{ "moinlela" }</Link<AppRoute>>
                 <span class="attribution">
                     { "© 2019. An interactive learning project from" }
-                    <a href="https://www.goyav.com"> { "Goyav" } </a>
+                    <a href="https://www.goyav.re"> { "Goyav" } </a>
                     { ". Code licensed under MIT." }
                 </span>
             </div>

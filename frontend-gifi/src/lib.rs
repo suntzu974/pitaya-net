@@ -1,23 +1,50 @@
-#![recursion_limit = "1024"]
-
-#[allow(dead_code)]
-mod app;
-pub mod components;
-pub mod error;
-pub mod hooks;
-pub mod routes;
-pub mod services;
-pub mod types;
-
-use app::PitayaApp;
+use yew::prelude::*;
 use wasm_bindgen::prelude::*;
 
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+enum Msg {
+    AddOne,
+}
+
+struct Model {
+    value: i64,
+}
+
+impl Component for Model {
+    type Message = Msg;
+    type Properties = ();
+
+    fn create(_ctx: &Context<Self>) -> Self {
+        Self {
+            value: 0,
+        }
+    }
+
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+        match msg {
+            Msg::AddOne => {
+                self.value += 1;
+                // the value has changed so we need to
+                // re-render for it to appear on the page
+                true
+            }
+        }
+    }
+
+    fn view(&self, ctx: &Context<Self>) -> Html {
+        // This gives us a component's "`Scope`" which allows us to send messages, etc to the component.
+        let link = ctx.link();
+        html! {
+            <div>
+                <button onclick={link.callback(|_| Msg::AddOne)}>{ "+1" }</button>
+                <p>{ self.value }</p>
+            </div>
+        }
+    }
+}
 
 #[wasm_bindgen(start)]
 pub fn run_app() {
     wasm_logger::init(wasm_logger::Config::default());
     log::info!("Starting app");
-    yew::start_app::<PitayaApp>();
+    yew::start_app::<Model>();
 }
