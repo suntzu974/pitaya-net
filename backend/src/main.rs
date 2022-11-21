@@ -37,7 +37,52 @@ pub fn create_pool() -> Result<Pool, String> {
     Ok(get_db_config().create_pool(Some(Runtime::Tokio1), tokio_postgres::NoTls).map_err(|err| err.to_string())?)
 }
 
+#[cfg(debug_assertions)]
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    if std::env::var("RUST_LOG").is_err() {
+        std::env::set_var("RUST_LOG", "actix_web=info");
+    }
+ 
+    env_logger::init();
+    dotenv().ok();
 
+    let config_db = Config::from_env().unwrap();
+    let pool:Pool = create_pool().unwrap();
+    println!("Starting http server: {}:{} ",config_db.backend_host.clone(),config_db.backend_port.clone());
+
+    HttpServer::new(move || {
+
+        let cors = Cors::default()
+        .allowed_origin("https://www.goyav.re:8443")
+        .allowed_origin("https://www.goyav.re:443")
+        .allowed_origin("https://www.goyav.re:3011")
+        .allowed_origin("https://www.goyav.re:3010")
+        .allowed_origin("https://www.goyav.re")
+        .allowed_origin("http://localhost")
+        .allowed_origin("http://localhost:8080")
+        .allowed_methods(vec!["GET","PUT","POST","DELETE"])
+        .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT])
+        .allowed_header(header::CONTENT_TYPE)
+        .max_age(3600);
+        App::new()
+            .wrap(cors)
+            // enable logger
+            .wrap(middleware::Logger::default())
+            // register simple handler, handle all methods
+            .app_data(web::Data::new(pool.clone()))
+            .app_data(bearer::Config::default)
+            .configure(user::init_routes)
+            .configure(article::init_routes)
+            .configure(review::init_routes)
+            .configure(comment::init_routes)
+            .configure(container::init_routes)
+    })
+    .bind(format!("{}:{}" ,config_db.backend_host,config_db.backend_port))?
+    .run()
+    .await
+}
+#[cfg(not(debug_assertions))]
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     if std::env::var("RUST_LOG").is_err() {
@@ -98,6 +143,7 @@ async fn main() -> std::io::Result<()> {
             .configure(article::init_routes)
             .configure(review::init_routes)
             .configure(comment::init_routes)
+            .configure(container::init_routes)
     })
     .bind_rustls(format!("{}:{}" ,config_db.backend_host,config_db.backend_port,), config)?
     .run()

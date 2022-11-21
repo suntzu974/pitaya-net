@@ -74,8 +74,8 @@ pub struct InputContainer {
 #[derive(Deserialize, MultipartForm, Debug)]
 pub struct ContainerForm {
     #[multipart(max_size = 12MB)]
-    pub title: String,
-    pub description: String, 
+//    pub title: String,
+ //   pub description: String, 
     pub file: File,
 }
 #[derive(Serialize, Deserialize)]
@@ -132,11 +132,12 @@ impl Container {
         .pop()
         .ok_or(ServiceError::Unauthorized) // more applicable for SELECTs
     }
+
     pub async fn update(
-        review_id: i32,
-        review: InputReview,
+        container_id: i32,
+        container: InputContainer,
         client: &Client ) -> Result<Container, ServiceError> {
-        let _stmt = include_str!("../../sql/review/update_container.sql");
+        let _stmt = include_str!("../../sql/container/update_container.sql");
         let _stmt = _stmt.replace("$table_fields", &Container::sql_table_fields());
         let stmt = client.prepare(&_stmt).await.unwrap();
         client
@@ -251,10 +252,10 @@ impl From<Row> for Container {
             ean: row.get(16),
             theme: row.get(17),
             codedouanier: row.get(18),
-            commmande: row.get(19),
+            commande: row.get(19),
             libunivers: row.get(20),
             univers: row.get(21),
-            libfamile: row.get(22),
+            libfamille: row.get(22),
             famille: row.get(23),
             libsfamille: row.get(24),
             sfamille: row.get(25),

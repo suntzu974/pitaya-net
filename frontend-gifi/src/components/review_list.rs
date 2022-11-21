@@ -27,10 +27,6 @@ pub fn review_list(props: &Props) -> Html {
         use_async(async move {
             match filter {
                 ReviewListFilter::All => all(*current_page).await,
-                ReviewicleListFilter::ByAuthor(author) => by_author(author, *current_page).await,
-                ArticleListFilter::ByTag(tag) => by_tag(tag, *current_page).await,
-                ArticleListFilter::FavoritedBy(author) => favorited_by(author, *current_page).await,
-                ArticleListFilter::Feed => feed().await,
             }
         })
     };
@@ -48,10 +44,10 @@ pub fn review_list(props: &Props) -> Html {
     }
 
     {
-        let article_list = article_list.clone();
+        let review_list = review_list.clone();
         use_effect_with_deps(
             move |_| {
-                article_list.run();
+                review_list.run();
                 || ()
             },
             (props.filter.clone(), *current_page),
@@ -65,22 +61,22 @@ pub fn review_list(props: &Props) -> Html {
         })
     };
 
-    if let Some(article_list) = &article_list.data {
-        if !article_list.articles.is_empty() {
+    if let Some(review_list) = &review_list.data {
+        if !review_list.review.is_empty() {
             html! {
                 <>
-                    {for article_list.articles.iter().map(|article| {
-                        html! { <ArticlePreview article={article.clone()} /> }
+                    {for review_list.articles.iter().map(|review| {
+                        html! { <ReviewPreview review={review.clone()} /> }
                     })}
                     <ListPagination
-                        total_count={article_list.articles_count}
+                        total_count={review_list.reviews_count}
                         current_page={*current_page}
                         callback={callback} />
                 </>
             }
         } else {
             html! {
-                <div class="article-preview">{ "No articles are here... yet." }</div>
+                <div class="article-preview">{ "No reviews are here... yet." }</div>
             }
         }
     } else {

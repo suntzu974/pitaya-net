@@ -18,6 +18,7 @@ pub struct Config {
     pub pictures_originals:String,
     pub pictures_thumbnails:String,
     pub pictures_web:String,
+    pub files_directory:String,
 }
 
 impl Config {

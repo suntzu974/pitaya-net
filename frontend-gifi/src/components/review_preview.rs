@@ -3,47 +3,47 @@ use yew_hooks::use_async;
 use yew_router::prelude::*;
 
 use crate::routes::AppRoute;
-use crate::services::articles::*;
-use crate::types::ArticleInfo;
+use crate::services::reviews::*;
+use crate::types::ReviewInfo;
 
 const FAVORITED_CLASS: &str = "btn btn-sm btn-primary";
 const NOT_FAVORITED_CLASS: &str = "btn btn-sm btn-outline-primary";
 
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props {
-    pub article: ArticleInfo,
+    pub review: ReviewInfo,
 }
 
 /// Single article preview component used by article list.
-#[function_component(ArticlePreview)]
+#[function_component(ReviewPreview)]
 pub fn article_preview(props: &Props) -> Html {
-    let article = use_state(|| props.article.clone());
-    let article_favorite = {
-        let article = article.clone();
+    let review = use_state(|| props.review.clone());
+    let review_favorite = {
+        let review = review.clone();
         use_async(async move {
-            if article.favorited {
-                unfavorite(article.slug.clone()).await
+            if review.favorited {
+                unfavorite(review.slug.clone()).await
             } else {
-                favorite(article.slug.clone()).await
+                favorite(review.slug.clone()).await
             }
         })
     };
 
     {
-        let article = article.clone();
-        let article_favorite = article_favorite.clone();
+        let review = review.clone();
+        let review_favorite = review_favorite.clone();
         use_effect_with_deps(
-            move |article_favorite| {
-                if let Some(article_info) = &article_favorite.data {
-                    article.set(article_info.article.clone());
+            move |review_favorite| {
+                if let Some(review_info) = &review_favorite.data {
+                    article.set(review_info.article.clone());
                 }
                 || ()
             },
-            article_favorite,
+            review_favorite,
         );
     }
 
-    let favorite_button_class = if article.favorited {
+    let favorite_button_class = if review.favorited {
         FAVORITED_CLASS
     } else {
         NOT_FAVORITED_CLASS
@@ -51,14 +51,14 @@ pub fn article_preview(props: &Props) -> Html {
     let onclick = {
         Callback::from(move |ev: MouseEvent| {
             ev.prevent_default();
-            article_favorite.run();
+            review_favorite.run();
         })
     };
 
     html! {
         <div class="article-preview">
             <div class="article-meta">
-                <img alt="image" src={article.author.image.clone()} />
+                <img alt="image" src={review.original.clone()} />
                 <div class="info">
                     <Link<AppRoute>
                         to={AppRoute::Profile { username: article.author.username.clone() }}
