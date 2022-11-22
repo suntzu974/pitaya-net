@@ -13,13 +13,5 @@
 <p> Cette application est multiplateforme. 
   Actuellement , cette dernière est hebergée en local sur serveur en FreeBSD <a href=https://www.goyav.re> home  </a>
 </p>
-
-<blockquote> 
-<p>git init<p>
-  <p>git commit -m "first commit"</p>
-  <p>git branch -M main </p>
-  <p>git remote add origin https://github.com/suntzu974/pitaya-net.git</p>
-<p>git push -u origin main</p>
-</blockquote>
-  </body>
+</body>
 </html>
