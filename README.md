@@ -11,21 +11,15 @@
   Le backend est associé à une base de donnée postgresql en local.
 </p>
 <p> Cette application est multiplateforme. 
-  Actuellement , cette dernière est hebergé en local sur serveur en FreeBSD <p>https://www.goyav.re </p>
+  Actuellement , cette dernière est hebergée en local sur serveur en FreeBSD <a href=https://www.goyav.re> home  </a>
 </p>
 
-</body>
-<footer> 
+<blockquote> 
 <p>git init<p>
-<p>git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/suntzu974/pitaya-net.git
-git push -u origin main
-…or push an existing repository from the command line
-git remote add origin https://github.com/suntzu974/pitaya-net.git
-git branch -M main
-git push -u origin main
-<p>
-
-</footer>
+  <p>git commit -m "first commit"</p>
+  <p>git branch -M main </p>
+  <p>git remote add origin https://github.com/suntzu974/pitaya-net.git</p>
+<p>git push -u origin main</p>
+</blockquote>
+  </body>
 </html>
