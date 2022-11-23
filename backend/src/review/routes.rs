@@ -1,5 +1,5 @@
 use actix_multipart_extract::{ Multipart};
-use crate::review::{Review,InputReview,ReviewForm,FileDownloaded};
+use crate::review::{Review,InputReview,ReviewForm,FileDownloaded,ReviewListInfo};
 use actix_web::{delete,get,post,put,web, Error, HttpResponse};
 use crate::utils::utils::{resize_for_thumbnail,resize_for_web,Config};
 use std::fs;
@@ -12,7 +12,8 @@ async fn find_all(
     ) -> Result<HttpResponse, Error> {
     let client: Client = db.get().await.unwrap();
     let reviews = Review::get_reviews(&client).await.unwrap();
-    Ok(HttpResponse::Ok().json(reviews))
+    Ok(HttpResponse::Ok().json(ReviewListInfo { reviews: reviews.clone(),
+                                                reviews_count: reviews.len() as u32 }))
 }
 
 // Handler for GET /users/{id}
@@ -70,8 +71,12 @@ pub async fn upload(
 
     let path_originals = format!("{}/{}",pictures.pictures_originals,&review_form.picture.name);
     fs::write( Path::new(&path_originals), &review_form.picture.bytes).unwrap();
-    let urlpath = format!("{}://{}:{}/download/{}","https",pictures.web_host,pictures.backend_port,
-    sanitize_filename::sanitize(&review_form.picture.name));
+    #[cfg(debug_assertions)]
+    let urlpath = format!("{}://{}:{}/download/{}","http",pictures.web_host,pictures.backend_port,sanitize_filename::sanitize(&review_form.picture.name));
+    #[cfg(not(debug_assertions))]
+    let urlpath = format!("{}://{}:{}/download/{}","https",pictures.web_host,pictures.backend_port,sanitize_filename::sanitize(&review_form.picture.name));
+
+    
   
     let downloaded_review = InputReview {
         title: review_form.title.clone(),

@@ -69,6 +69,24 @@ pub async fn hash_password(password: &str) -> Result<String, ServiceError> {
 extern crate image;
 
 use image::ImageFormat;
+#[cfg(debug_assertions)]
+pub async fn resize_for_thumbnail(filename: String) -> String {
+    let pictures = Config::from_env().unwrap();
+
+    let mut filepath = format!("{}/{}", pictures.pictures_originals, sanitize_filename::sanitize(&filename));
+    let img = image::open(filepath).unwrap();
+    let scaled = img.thumbnail(400, 400);
+
+
+    filepath = format!("{}/{}", pictures.pictures_thumbnails, sanitize_filename::sanitize(&filename));
+    let smallpicture = format!("{}", sanitize_filename::sanitize(&filename));
+    let mut output = std::fs::File::create(filepath.clone()).unwrap();
+    scaled.write_to(&mut output, ImageFormat::Jpeg).unwrap();
+    let urlpath = format!("{}://{}:{}/thumbnail/{}","http",pictures.web_host,pictures.backend_port,smallpicture,);
+    return urlpath.clone();
+}
+
+#[cfg(not(debug_assertions))]
 pub async fn resize_for_thumbnail(filename: String) -> String {
     let pictures = Config::from_env().unwrap();
 
@@ -84,6 +102,26 @@ pub async fn resize_for_thumbnail(filename: String) -> String {
     let urlpath = format!("{}://{}:{}/thumbnail/{}","https",pictures.web_host,pictures.backend_port,smallpicture,);
     return urlpath.clone();
 }
+
+#[cfg(debug_assertions)]
+pub async fn resize_for_web(filename: String) -> String {
+    let pictures = Config::from_env().unwrap();
+
+
+    let mut filepath = format!("{}/{}", pictures.pictures_originals, sanitize_filename::sanitize(&filename));
+
+    let img = image::open(filepath).unwrap();
+    let scaled = img.thumbnail(1024, 768);
+
+
+    filepath = format!("{}/{}", pictures.pictures_web, sanitize_filename::sanitize(&filename));
+    let smallpicture = format!("{}", sanitize_filename::sanitize(&filename));
+    let mut output = std::fs::File::create(filepath.clone()).unwrap();
+    scaled.write_to(&mut output, ImageFormat::Jpeg).unwrap();
+    let urlpath = format!("{}://{}:{}/web/{}","http",pictures.web_host,pictures.backend_port,smallpicture,);
+    return urlpath.clone();
+}
+#[cfg(not(debug_assertions))]
 pub async fn resize_for_web(filename: String) -> String {
     let pictures = Config::from_env().unwrap();
 

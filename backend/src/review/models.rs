@@ -20,6 +20,12 @@ pub struct Review {
     pub deleted: bool,
    // pub created_at: chrono::NaiveDateTime,
 }
+#[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct ReviewListInfo {
+    pub reviews: Vec<Review>,
+    pub reviews_count: u32,
+}
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq/*, PostgresMapper*/)]
 #[serde(rename_all = "camelCase")]

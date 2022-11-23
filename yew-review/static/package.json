@@ -1,0 +1,13 @@
+{
+  "name": "yew-review",
+  "collaborators": [
+    "Jeannick GRONDIN"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "yew-review_bg.wasm",
+    "yew-review.js"
+  ],
+  "module": "yew-review.js",
+  "sideEffects": false
+}

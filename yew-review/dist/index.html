@@ -1,0 +1,87 @@
+<html><head>
+    <title>Rust Frontend Example with Yew</title>
+    <style>
+        body {
+            font-size: 14px;
+            font-family: sans-serif;
+        }
+        a {
+            text-decoration: none;
+            color: #339;
+        }
+        a:hover {
+            text-decoration: none;
+            color: #33f;
+        }
+        .todo {
+            background-color: #efefef;
+            margin: 100px 25% 25% 25%;
+            width: 50%;
+            padding: 10px;
+        }
+        .todo .nav {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .todo .refresh {
+            text-align: center;
+            margin: 10px 0 10px 0;
+        }
+        .todo .list .list-item {
+            margin: 2px;
+            padding: 5px;
+            background-color: #cfc;
+        }
+        .todo .list .completed {
+            text-decoration: line-through;
+            background-color: #dedede;
+        }
+        .detail {
+            font-size: 16px;
+        }
+        .detail h1 {
+            font-size: 24px;
+        }
+        .detail .id {
+            color: #999;
+        }
+        .detail .completed {
+            color: #3f3;
+        }
+        .detail .not-completed {
+            color: #f33;
+        }
+    </style>
+  
+<link rel="preload" href="/yew-review-d8790700d7e7a7da_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
+<link rel="modulepreload" href="/yew-review-d8790700d7e7a7da.js"></head>
+<body>
+<script type="module">import init from '/yew-review-d8790700d7e7a7da.js';init('/yew-review-d8790700d7e7a7da_bg.wasm');</script><script>(function () {
+    var protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    var url = protocol + '//' + window.location.host + '/_trunk/ws';
+    var poll_interval = 5000;
+    var reload_upon_connect = () => {
+        window.setTimeout(
+            () => {
+                // when we successfully reconnect, we'll force a
+                // reload (since we presumably lost connection to
+                // trunk due to it being killed, so it will have
+                // rebuilt on restart)
+                var ws = new WebSocket(url);
+                ws.onopen = () => window.location.reload();
+                ws.onclose = reload_upon_connect;
+            },
+            poll_interval);
+    };
+
+    var ws = new WebSocket(url);
+    ws.onmessage = (ev) => {
+        const msg = JSON.parse(ev.data);
+        if (msg.reload) {
+            window.location.reload();
+        }
+    };
+    ws.onclose = reload_upon_connect;
+})()
+</script></body></html>
