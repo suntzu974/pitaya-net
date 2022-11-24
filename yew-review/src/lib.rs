@@ -21,8 +21,6 @@ enum Route {
     Home,
     #[at("/reviews")]
     List,
-    #[at("/list")]
-    List1,
 //    #[at("/reviews/{id}")]
 //    Detail{slug: i32},
 
@@ -31,8 +29,6 @@ fn switch(routes: &Route) -> Html {
     match routes {
         Route::Home => html! { <h1>{ "Hello Frontend" }</h1> },
         Route::List => html! {<List/> },
-        Route::List1 => html! {<List1/> },
-//        Route::Detail {slug} => html! {<Detail slug = {slug.clone()}/>},
     }
 }
 
@@ -47,7 +43,7 @@ fn app() -> Html {
 
 }
 
-#[function_component(List1)]
+#[function_component(List)]
 pub fn review_list() -> Html {
     let current_page = use_state(|| 0u32);
 
@@ -87,8 +83,13 @@ pub fn review_list() -> Html {
             }
         }
         Some(Ok(data)) => {
+            let reviews:ReviewListInfo = serde_json::from_str(data).unwrap();
             html! {
-                <div>{data}</div>
+                <>
+                    {for reviews.reviews.iter().map(|review| {
+                        html! { <ReviewPreview review={review.clone()} /> }
+                    })}
+                </>
             }
         }
         Some(Err(err)) => {
@@ -100,35 +101,6 @@ pub fn review_list() -> Html {
 
 }
 
-#[function_component(List)]
-pub fn reviews() -> Html {
-    let current_page = use_state(|| 0u32);
-    let review_list = {
-        let current_page = current_page.clone();
-        use_async(async move { all(*current_page).await })
-    };
-
-    if let Some(review_list) = &review_list.data {
-        if !review_list.reviews.is_empty() {
-            html! {
-                <>
-                    {for review_list.reviews.iter().map(|review| {
-                        html! { <ReviewPreview review={review.clone()} /> }
-                    })}
-                </>
-            }
-        } else {
-            html! {
-                <div class="article-preview">{ "No articles are here... yet." }</div>
-            }
-        }
-    } else {
-        html! {
-            <div class="article-preview">{ "Loading..." }</div>
-        }
-    }
-
-}
 
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props {
