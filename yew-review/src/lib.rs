@@ -8,7 +8,7 @@ use gloo_net::http::Request;
 use wasm_bindgen::prelude::*;
 use yew_router::prelude::*;
 use yew_hooks::use_async;
-use crate::models::review::{ReviewListInfo};
+use crate::models::review::{ReviewListInfo,ReviewInfo};
 
 use yew::prelude::*;
 use wasm_bindgen_futures::spawn_local;
@@ -21,6 +21,8 @@ enum Route {
     Home,
     #[at("/reviews")]
     List,
+    #[at("/list")]
+    List1,
 //    #[at("/reviews/{id}")]
 //    Detail{slug: i32},
 
@@ -29,6 +31,7 @@ fn switch(routes: &Route) -> Html {
     match routes {
         Route::Home => html! { <h1>{ "Hello Frontend" }</h1> },
         Route::List => html! {<List/> },
+        Route::List1 => html! {<List1/> },
 //        Route::Detail {slug} => html! {<Detail slug = {slug.clone()}/>},
     }
 }
@@ -44,9 +47,7 @@ fn app() -> Html {
 
 }
 
-/// Filters for article list
-
-#[function_component(List)]
+#[function_component(List1)]
 pub fn review_list() -> Html {
     let current_page = use_state(|| 0u32);
 
@@ -56,7 +57,10 @@ pub fn review_list() -> Html {
         use_effect(move || {
             if data.is_none() {
                 spawn_local(async move {
-                    let resp = Request::get("http://localhost:3011/reviews?limit=100&offset=0").send().await.unwrap();
+                    let resp = Request::get("http://localhost:3011/reviews?limit=100&offset=0")
+                                .send()
+                                .await
+                                .unwrap();
                     let result = {
                         if !resp.ok() {
                             Err(format!(
@@ -95,6 +99,57 @@ pub fn review_list() -> Html {
     }
 
 }
+
+#[function_component(List)]
+pub fn reviews() -> Html {
+    let current_page = use_state(|| 0u32);
+    let review_list = {
+        let current_page = current_page.clone();
+        use_async(async move { all(*current_page).await })
+    };
+
+    if let Some(review_list) = &review_list.data {
+        if !review_list.reviews.is_empty() {
+            html! {
+                <>
+                    {for review_list.reviews.iter().map(|review| {
+                        html! { <ReviewPreview review={review.clone()} /> }
+                    })}
+                </>
+            }
+        } else {
+            html! {
+                <div class="article-preview">{ "No articles are here... yet." }</div>
+            }
+        }
+    } else {
+        html! {
+            <div class="article-preview">{ "Loading..." }</div>
+        }
+    }
+
+}
+
+#[derive(Properties, Clone, PartialEq)]
+pub struct Props {
+    pub review: ReviewInfo,
+}
+
+/// Single article preview component used by article list.
+#[function_component(ReviewPreview)]
+pub fn article_preview(props: &Props) -> Html {
+    let review = use_state(|| props.review.clone());
+
+    html! {
+        <div class="article-preview">
+            <div class="article-meta">
+                <img alt="image" src={review.thumbnail.clone()} />
+            </div>
+            <p>{ &review.description }</p>
+        </div>
+    }
+}
+
 /*
 #[derive(Properties, Clone, PartialEq)]
 pub struct Props {
