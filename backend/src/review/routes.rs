@@ -1,5 +1,5 @@
 use actix_multipart_extract::{ Multipart};
-use crate::review::{Review,InputReview,ReviewForm,FileDownloaded,ReviewListInfo};
+use crate::review::{Review,InputReview,ReviewForm,FileDownloaded,ReviewListInfo,Query};
 use actix_web::{delete,get,post,put,web, Error, HttpResponse};
 use crate::utils::utils::{resize_for_thumbnail,resize_for_web,Config};
 use std::fs;
@@ -8,10 +8,11 @@ use deadpool_postgres::{Client, Pool};
 
 #[get("/reviews")]
 async fn find_all(
+    info:web::Query<Query>,
     db: web::Data<Pool>,
     ) -> Result<HttpResponse, Error> {
     let client: Client = db.get().await.unwrap();
-    let reviews = Review::get_reviews(&client).await.unwrap();
+    let reviews = Review::get_reviews(&info,&client).await.unwrap();
     Ok(HttpResponse::Ok().json(ReviewListInfo { reviews: reviews.clone(),
                                                 reviews_count: reviews.len() as u32 }))
 }

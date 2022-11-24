@@ -7,6 +7,7 @@ mod error;
 use gloo_net::http::Request;
 use wasm_bindgen::prelude::*;
 use yew_router::prelude::*;
+use yew_hooks::use_async;
 use crate::models::review::{ReviewListInfo};
 
 use yew::prelude::*;
@@ -27,10 +28,12 @@ enum Route {
 fn switch(routes: &Route) -> Html {
     match routes {
         Route::Home => html! { <h1>{ "Hello Frontend" }</h1> },
-        Route::List => html! { <List /> },
+        Route::List => html! {<List/> },
 //        Route::Detail {slug} => html! {<Detail slug = {slug.clone()}/>},
     }
 }
+
+
 #[function_component(App)]
 fn app() -> Html {
     html! {
@@ -40,31 +43,20 @@ fn app() -> Html {
     }
 
 }
-#[function_component(List)]
-fn list() -> Html {
-    let current_page = use_state(|| 0u32);
-    let article_list = {
-        let filter = props.filter.clone();
-        let current_page = current_page.clone();
 
-        use_async(async move {
-            match filter {
-                ArticleListFilter::All => all(*current_page).await,
-                ArticleListFilter::ByAuthor(author) => by_author(author, *current_page).await,
-                ArticleListFilter::ByTag(tag) => by_tag(tag, *current_page).await,
-                ArticleListFilter::FavoritedBy(author) => favorited_by(author, *current_page).await,
-                ArticleListFilter::Feed => feed().await,
-            }
-        })
-    };
+/// Filters for article list
+
+#[function_component(List)]
+pub fn review_list() -> Html {
+    let current_page = use_state(|| 0u32);
+
     let data = use_state(|| None);
     {
         let data = data.clone();
         use_effect(move || {
             if data.is_none() {
                 spawn_local(async move {
-                    let resp = Request::get("http://localhost:8081/reviews").send().await.unwrap();
-
+                    let resp = Request::get("http://localhost:3011/reviews?limit=100&offset=0").send().await.unwrap();
                     let result = {
                         if !resp.ok() {
                             Err(format!(
@@ -92,7 +84,7 @@ fn list() -> Html {
         }
         Some(Ok(data)) => {
             html! {
-                <div>{"Got server response: "}{data}</div>
+                <div>{data}</div>
             }
         }
         Some(Err(err)) => {

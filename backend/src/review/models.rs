@@ -6,6 +6,11 @@ use tokio_pg_mapper::FromTokioPostgresRow;
 use mobc_postgres::{tokio_postgres::{Row}};
 use actix_multipart_extract::{File, MultipartForm};
 
+#[derive(Debug, Deserialize)]
+pub struct Query {
+    pub limit: u32,
+    pub offset: u32,
+}
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, PostgresMapper)]
 #[pg_mapper(table = "reviews")] 
@@ -156,11 +161,11 @@ impl Review {
             .pop()
             .ok_or(ServiceError::Unauthorized) 
     }
-    pub async fn get_reviews(client: &Client) -> Result<Vec<Review>, ServiceError> {
+    pub async fn get_reviews(info:&Query,client: &Client) -> Result<Vec<Review>, ServiceError> {
         let _stmt = include_str!("../../sql/review/get_reviews.sql");
         let _stmt = _stmt.replace("$table_fields", &Review::sql_table_fields());
         let stmt = client.prepare(&_stmt).await.unwrap();
-        let rows = client.query(&stmt, &[]).await?;
+        let rows = client.query(&stmt, &[&(info.limit as i64),&(info.offset as i64),]).await?;
         Ok(rows
             .into_iter()
             .map(|row| Review::from(row))
