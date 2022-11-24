@@ -1,11 +1,10 @@
 use crate::services::requests::{limit, request_get, request_post, request_put};
 use crate::models::review::*;
 use crate::error::Error;
-/// Get all review
-pub async fn all(page: u32) -> Result<ReviewListInfo, Error> {
-    request_get::<ReviewListInfo>(format!("/reviews?{}", limit(10, page))).await
+/// Get all reviews
+pub async fn get_all() -> Result<ReviewListInfo, Error> {
+    request_get::<ReviewListInfo>("/reviews".to_string()).await
 }
-
 /// Get an review
 pub async fn get(id: i32) -> Result<ReviewInfoWrapper, Error> {
     request_get::<ReviewInfoWrapper>(format!("/reviews/{}", id)).await
