@@ -161,11 +161,11 @@ impl Review {
             .pop()
             .ok_or(ServiceError::Unauthorized) 
     }
-    pub async fn get_reviews(info:&Query,client: &Client) -> Result<Vec<Review>, ServiceError> {
+    pub async fn get_reviews(client: &Client) -> Result<Vec<Review>, ServiceError> {
         let _stmt = include_str!("../../sql/review/get_reviews.sql");
         let _stmt = _stmt.replace("$table_fields", &Review::sql_table_fields());
         let stmt = client.prepare(&_stmt).await.unwrap();
-        let rows = client.query(&stmt, &[&(info.limit as i64),&(info.offset as i64),]).await?;
+        let rows = client.query(&stmt, &[]).await?;
         Ok(rows
             .into_iter()
             .map(|row| Review::from(row))

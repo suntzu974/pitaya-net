@@ -8,11 +8,10 @@ use deadpool_postgres::{Client, Pool};
 
 #[get("/reviews")]
 async fn find_all(
-    info:web::Query<Query>,
     db: web::Data<Pool>,
     ) -> Result<HttpResponse, Error> {
     let client: Client = db.get().await.unwrap();
-    let reviews = Review::get_reviews(&info,&client).await.unwrap();
+    let reviews = Review::get_reviews(&client).await.unwrap();
     Ok(HttpResponse::Ok().json(ReviewListInfo { reviews: reviews.clone(),
                                                 reviews_count: reviews.len() as u32 }))
 }
