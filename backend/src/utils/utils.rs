@@ -75,7 +75,7 @@ pub async fn resize_for_thumbnail(filename: String) -> String {
 
     let mut filepath = format!("{}/{}", pictures.pictures_originals, sanitize_filename::sanitize(&filename));
     let img = image::open(filepath).unwrap();
-    let scaled = img.thumbnail(400, 400);
+    let scaled = img.thumbnail(230, 307);
 
 
     filepath = format!("{}/{}", pictures.pictures_thumbnails, sanitize_filename::sanitize(&filename));
@@ -92,7 +92,7 @@ pub async fn resize_for_thumbnail(filename: String) -> String {
 
     let mut filepath = format!("{}/{}", pictures.pictures_originals, sanitize_filename::sanitize(&filename));
     let img = image::open(filepath).unwrap();
-    let scaled = img.thumbnail(400, 400);
+    let scaled = img.thumbnail(230, 307);
 
 
     filepath = format!("{}/{}", pictures.pictures_thumbnails, sanitize_filename::sanitize(&filename));
@@ -129,7 +129,7 @@ pub async fn resize_for_web(filename: String) -> String {
     let mut filepath = format!("{}/{}", pictures.pictures_originals, sanitize_filename::sanitize(&filename));
 
     let img = image::open(filepath).unwrap();
-    let scaled = img.thumbnail(1024, 768);
+    let scaled = img.thumbnail(800, 600);
 
 
     filepath = format!("{}/{}", pictures.pictures_web, sanitize_filename::sanitize(&filename));

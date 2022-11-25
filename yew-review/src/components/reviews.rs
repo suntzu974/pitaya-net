@@ -14,7 +14,7 @@ pub fn reviews() -> Html {
 
     if let Some(review_list) = &review_list.data {
         html! {
-            <div class="tag-list">
+            <div class="container">
                 {for review_list.reviews.iter().map(|review| {
                     html! {
                         <ReviewPreview review={review.clone()} /> 

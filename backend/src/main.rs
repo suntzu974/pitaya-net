@@ -60,7 +60,7 @@ async fn main() -> std::io::Result<()> {
         .allowed_origin("https://www.goyav.re:3010")
         .allowed_origin("https://www.goyav.re")
         .allowed_origin("http://localhost")
-        .allowed_origin("http://localhost:8080")
+        .allowed_origin("http://localhost:3000")
         .allowed_methods(vec!["GET","PUT","POST","DELETE"])
         .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT])
         .allowed_header(header::CONTENT_TYPE)

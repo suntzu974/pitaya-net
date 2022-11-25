@@ -14,7 +14,7 @@ pub fn home() -> Html {
         <div class="home-page">
             <Banner />
             <div class="container page">
-                <div class="row">
+                <div class="card-column">
                     <MainView />
                 </div>
             </div>
