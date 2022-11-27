@@ -29,6 +29,11 @@ fn logged_out_view() -> Html {
                 </Link<AppRoute>>
             </li>
             <li class="nav-item">
+            <Link<AppRoute> to={AppRoute::FileUpload} classes="nav-link">
+                { "Upload" }
+            </Link<AppRoute>>
+            </li>
+            <li class="nav-item">
                 <Link<AppRoute> to={AppRoute::ReviewList} classes="nav-link">
                     { "Reviews" }
                 </Link<AppRoute>>
