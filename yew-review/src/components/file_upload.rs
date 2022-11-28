@@ -129,7 +129,7 @@ impl Component for FileUpload {
                         Self::upload_files(input.files())
                     })}
                 />
-                <div id="preview-area">
+                <div id="preview-area-bis">
                     { for self.files.iter().map(Self::view_file) }
                 </div>
             </div>

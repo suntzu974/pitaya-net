@@ -13,7 +13,7 @@ pub struct Query {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, PostgresMapper)]
-#[pg_mapper(table = "reviews")] 
+#[pg_mapper(table = "reviewsdata")] 
 pub struct Review {
     pub id: i32,
     pub title: String,
